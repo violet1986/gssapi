@@ -3,6 +3,7 @@
 package gssapi
 
 /*
+#cgo CFLAGS: -I../../../../../installer/krb5/include
 #include <stdlib.h>
 #include <string.h>
 
@@ -64,11 +65,11 @@ var ErrMallocFailed = errors.New("malloc failed, out of memory?")
 // MakeBuffer returns a Buffer with an empty malloc-ed gss_buffer_desc in it.
 // The return value must be .Release()-ed
 func (lib *Lib) MakeBuffer(alloc int) (*Buffer, error) {
-	s := C.malloc(C.gss_buffer_size)
+	s := C.malloc(C.size_t(C.gss_buffer_size))
 	if s == nil {
 		return nil, ErrMallocFailed
 	}
-	C.memset(s, 0, C.gss_buffer_size)
+	C.memset(s, 0, C.size_t(C.gss_buffer_size))
 
 	b := &Buffer{
 		Lib:            lib,

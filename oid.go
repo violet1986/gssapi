@@ -3,6 +3,7 @@
 package gssapi
 
 /*
+#cgo CFLAGS: -I../../../../../installer/krb5/include
 #include <stdlib.h>
 #include <string.h>
 
@@ -49,11 +50,11 @@ func (lib *Lib) NewOID() *OID {
 func (lib *Lib) MakeOIDBytes(data []byte) (*OID, error) {
 	oid := lib.NewOID()
 
-	s := C.malloc(C.gss_OID_size) // s for struct
+	s := C.malloc(C.size_t(C.gss_OID_size)) // s for struct
 	if s == nil {
 		return nil, ErrMallocFailed
 	}
-	C.memset(s, 0, C.gss_OID_size)
+	C.memset(s, 0, C.size_t(C.gss_OID_size))
 
 	l := C.size_t(len(data))
 	e := C.malloc(l) // c for contents
